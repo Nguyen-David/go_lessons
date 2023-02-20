@@ -61,7 +61,7 @@ func ListOfBooks(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	sort.Sort(entities.ByDate(books))
+	sort.Sort(entities.ByYear(books))
 
 	res, err := json.Marshal(books) // TODO think how convert year
 	if err != nil {
