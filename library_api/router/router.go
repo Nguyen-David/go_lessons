@@ -3,13 +3,13 @@ package router
 import (
     "github.com/gorilla/mux"
     "net/http"
-	"library_api/controllers"
+	"library_api/controller"
 )
 
 func Route() {
 	rtr := mux.NewRouter()
-	rtr.HandleFunc("/create_book", controllers.CreateBooks).Methods(http.MethodPost)
-	rtr.HandleFunc("/books", controllers.ListOfBooks).Methods(http.MethodGet)
+	rtr.HandleFunc("/create_book", controller.CreateBooks).Methods(http.MethodPost)
+	rtr.HandleFunc("/books", controller.List).Methods(http.MethodGet)
   
 	http.Handle("/", rtr)
   

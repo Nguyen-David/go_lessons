@@ -1,4 +1,4 @@
-package entities
+package entity
 
 type Book struct {
 	Name   string `json:"name"`

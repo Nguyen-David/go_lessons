@@ -1,10 +1,10 @@
-package controllers
+package controller
 
 import (
 	"encoding/json"
 	"fmt"
-	"library_api/entities"
-	"library_api/repositories"
+	"library_api/entity"
+	"library_api/repository"
 	"net/http"
 	"sort"
 	"strconv"
@@ -25,11 +25,11 @@ func CreateBooks(w http.ResponseWriter, r *http.Request) { // TODO discuss about
 		fmt.Println("name or author incorrect")
 		w.WriteHeader(http.StatusBadRequest)
 	} else {
-		books := []entities.Book{
+		books := []entity.Book{
 			{name, author, year},
 		}
 
-		book_repository := repositories.NewBookRepository()
+		book_repository := repository.NewBookRepository()
 
 		_, err := book_repository.Create(books)
 		if err != nil {
@@ -41,15 +41,15 @@ func CreateBooks(w http.ResponseWriter, r *http.Request) { // TODO discuss about
 	}
 }
 
-func ListOfBooks(w http.ResponseWriter, r *http.Request) {
+func List(w http.ResponseWriter, r *http.Request) {
 
-	initial_books := []entities.Book{
+	initial_books := []entity.Book{
 		{"Rage", "Stephen King", 1977},
 		{"Philosopher's Stone", "J. K. Rowling", 1997},
 		{"All Quiet on the Western Front", "Erich Maria Remarque", 1929},
 	}
 
-	book_repository := repositories.NewBookRepository()
+	book_repository := repository.NewBookRepository()
 
 	_, err := book_repository.Create(initial_books)
 	if err != nil {
@@ -61,7 +61,7 @@ func ListOfBooks(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	sort.Sort(entities.ByYear(books))
+	sort.Sort(entity.ByYear(books))
 
 	res, err := json.Marshal(books) // TODO think how convert year
 	if err != nil {
