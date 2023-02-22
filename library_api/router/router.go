@@ -8,8 +8,8 @@ import (
 
 func Route() {
 	rtr := mux.NewRouter()
-	rtr.HandleFunc("/create_book", controllers.CreateBooks).Methods("POST")
-	rtr.HandleFunc("/books", controllers.ListOfBooks).Methods("GET")
+	rtr.HandleFunc("/create_book", controllers.CreateBooks).Methods(http.MethodPost)
+	rtr.HandleFunc("/books", controllers.ListOfBooks).Methods(http.MethodGet)
   
 	http.Handle("/", rtr)
   
