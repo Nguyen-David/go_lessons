@@ -8,6 +8,7 @@ import (
 	"library_api/repository"
 	"net/http"
 	"sort"
+	"log"
 )
 
 type Book struct {
@@ -22,6 +23,8 @@ func (b *Book) CreateBooks(w http.ResponseWriter, r *http.Request) {
 
 	_, err = b.Book_repository.Create(book)
 	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		log.Println(err)
 		panic(err)
 	}
 
@@ -33,6 +36,8 @@ func (b *Book) CreateBooks(w http.ResponseWriter, r *http.Request) {
 func (b *Book) List(w http.ResponseWriter, r *http.Request) {
 	books, err := b.Book_repository.List()
 	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		log.Println(err)
 		panic(err)
 	}
 
@@ -40,6 +45,8 @@ func (b *Book) List(w http.ResponseWriter, r *http.Request) {
 
 	res, err := json.Marshal(books) 
 	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		log.Println(err)
 		panic(err)
 	}
 
