@@ -25,7 +25,7 @@ func (b *Book) CreateBooks(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		log.Println(err)
-		panic(err)
+		return
 	}
 
 	fmt.Println("Successfully Create books")
@@ -38,7 +38,7 @@ func (b *Book) List(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		log.Println(err)
-		panic(err)
+		return
 	}
 
 	sort.Sort(entity.ByYear(books))
@@ -47,7 +47,7 @@ func (b *Book) List(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		log.Println(err)
-		panic(err)
+		return
 	}
 
 	// output as json file
