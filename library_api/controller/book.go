@@ -25,7 +25,7 @@ func (b *Book) CreateBooks(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		log.Println(err)
-		return
+		return 
 	}
 
 	fmt.Println("Successfully Create books")
@@ -52,6 +52,6 @@ func (b *Book) List(w http.ResponseWriter, r *http.Request) {
 
 	// output as json file
 	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusAccepted)
+	w.WriteHeader(http.StatusOK)
 	w.Write(res)
 }
