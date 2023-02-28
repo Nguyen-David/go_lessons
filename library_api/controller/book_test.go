@@ -2,10 +2,8 @@ package controller_test
 
 import (
 	"bytes"
-	"encoding/json"
 	"errors"
 	"library_api/controller"
-	"library_api/entity"
 	"library_api/mock"
 	"net/http"
 	"net/http/httptest"
@@ -47,7 +45,7 @@ func TestCreateBooks(t *testing.T) {
 
 		r.ServeHTTP(rr, req)
 		assert.Equal(t, http.StatusCreated, rr.Code)
-		assert.Equal(t, ``, rr.Body.String())
+		assert.Empty(t, rr.Body.String())
 	})
 
 	t.Run("failed book upload", func(t *testing.T) {
@@ -75,6 +73,7 @@ func TestCreateBooks(t *testing.T) {
 
 func TestListOfBooks(t *testing.T) {
 	url := "/books"
+	jsonBody := []byte(`[{"name":"Test name","author":"Test Author","year":"2000"}]`)
 
 	t.Run("success show list of books", func(t *testing.T) {
 		req, err := http.NewRequest(http.MethodGet, "/books", nil)
@@ -94,9 +93,7 @@ func TestListOfBooks(t *testing.T) {
 
 		r.ServeHTTP(rr, req)
 		assert.Equal(t, http.StatusOK, rr.Code)
-		mockResult, err := json.Marshal(mock.BooksForShowing)
-		assert.Nil(t, err)
-		assert.Equal(t, mockResult, rr.Body.Bytes())
+		assert.Equal(t, jsonBody, rr.Body.Bytes())
 	})
 
 	t.Run("failed show list of books", func(t *testing.T) {
@@ -108,7 +105,7 @@ func TestListOfBooks(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 		mockBookRepository := mock.NewMockBookRepository(mockCtrl)
-		mockBookRepository.EXPECT().List().Return([]entity.Book{}, errors.New("book upload error"))
+		mockBookRepository.EXPECT().List().Return(nil, errors.New("book upload error"))
 
 		c := &controller.Book{Book_repository: mockBookRepository}
 		r := *mux.NewRouter()
@@ -117,6 +114,6 @@ func TestListOfBooks(t *testing.T) {
 
 		r.ServeHTTP(rr, req)
 		assert.Equal(t, http.StatusBadRequest, rr.Code)
-		assert.Equal(t, ``, rr.Body.String())
+		assert.Empty(t, rr.Body.String())
 	})
 }
