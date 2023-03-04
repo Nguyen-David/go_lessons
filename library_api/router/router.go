@@ -1,6 +1,7 @@
 package router
 
 import (
+	"library_api/config"
 	"library_api/controller"
 	"library_api/repository"
 	"net/http"
@@ -14,8 +15,8 @@ func Route() {
 	rtr.HandleFunc("/create_book", b.CreateBook).Methods(http.MethodPost)
 	rtr.HandleFunc("/books", b.List).Methods(http.MethodGet)
   
-	http.Handle("/", rtr)
+	http.Handle(config.ConfigGlobal.ListeningURL, rtr)
   
-	http.ListenAndServe(":8082", nil)
+	http.ListenAndServe(config.ConfigGlobal.Port, nil)
   }
   

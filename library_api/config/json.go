@@ -10,6 +10,7 @@ var ConfigGlobal Config
 type Config struct {
 	ListeningURL string `json:ListeningURL`
 	TimeFormat string `json:TimeFormat`
+	Port string `json:Port`
 }
 
 func NewJsonConfig(configFilePath string) (Config, error){
