@@ -73,7 +73,7 @@ func TestCreateBooks(t *testing.T) {
 
 func TestListOfBooks(t *testing.T) {
 	url := "/books"
-	jsonBody := []byte(`[{"name":"Test name","author":"Test Author","year":"2000"}]`)
+	jsonBody := []byte(`{"books":[{"name":"Test name","author":"Test Author","year":"2000"}],"date":""}`)
 
 	t.Run("success show list of books", func(t *testing.T) {
 		req, err := http.NewRequest(http.MethodGet, "/books", nil)
