@@ -22,11 +22,11 @@ type BookList struct {
 	Date BookTime `json:"date"`
 }
 
-type ByYear []Book
+type SortedBooks []Book
 
-func (a ByYear) Len() int           { return len(a) }
-func (a ByYear) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
-func (a ByYear) Less(i, j int) bool { return a[i].Year < a[j].Year }
+func (a SortedBooks) Len() int           { return len(a) }
+func (a SortedBooks) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
+func (a SortedBooks) Less(i, j int) bool { return a[i].Year < a[j].Year }
 
 func (b *Book) MarshalJSON() ([]byte, error) {
 	return json.Marshal(&BookRequestAndResponse{
