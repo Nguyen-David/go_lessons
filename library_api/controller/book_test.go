@@ -41,7 +41,7 @@ func TestCreateBooks(t *testing.T) {
 		c := &controller.Book{Book_repository: mockBookRepository}
 		r := *mux.NewRouter()
 		rr := httptest.NewRecorder()
-		r.HandleFunc(url, c.CreateBooks).Methods(http.MethodPost)
+		r.HandleFunc(url, c.CreateBook).Methods(http.MethodPost)
 
 		r.ServeHTTP(rr, req)
 		assert.Equal(t, http.StatusCreated, rr.Code)
@@ -63,7 +63,7 @@ func TestCreateBooks(t *testing.T) {
 		c := &controller.Book{Book_repository: mockBookRepository}
 		r := *mux.NewRouter()
 		rr := httptest.NewRecorder()
-		r.HandleFunc(url, c.CreateBooks).Methods(http.MethodPost)
+		r.HandleFunc(url, c.CreateBook).Methods(http.MethodPost)
 
 		r.ServeHTTP(rr, req)
 		assert.Equal(t, http.StatusBadRequest, rr.Code)

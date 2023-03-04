@@ -11,11 +11,15 @@ type Book struct {
 	Year   int    `json:"year"`
 }
 
-
 type BookRequestAndResponse struct {
 	Name   string `json:"name"`
 	Author string `json:"author"`
 	Year   string `json:"year"`
+}
+
+type BookList struct {
+	Books []Book `json:"books"`
+	Date BookTime `json:"date"`
 }
 
 type ByYear []Book
@@ -43,6 +47,7 @@ func (b *Book) UnmarshalJSON(data []byte) error {
 	b.Name = book.Name
 	b.Author = book.Author
 	b.Year, err = strconv.Atoi(book.Year)
+
 
 	return err
 }
