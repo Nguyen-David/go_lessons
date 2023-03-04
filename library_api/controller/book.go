@@ -20,17 +20,33 @@ func (b *Book) CreateBook(w http.ResponseWriter, r *http.Request) {
 	book := entity.Book{}
 
 	body, err := ioutil.ReadAll(r.Body)
-	json.Unmarshal(body, &book)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		log.Println(err)
+		return
+	}
+
+	err = json.Unmarshal(body, &book)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		log.Println(err)
+		return
+	}
 
 	_, err = b.Book_repository.Create(book)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		log.Println(err)
-		return 
+		return
 	}
 
 	bl := entity.BookList{}
-	json.Unmarshal(body, &bl)
+	err = json.Unmarshal(body, &bl)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		log.Println(err)
+		return
+	}
 
 	fmt.Println("Successfully Create books")
 	w.WriteHeader(http.StatusCreated)
@@ -45,13 +61,13 @@ func (b *Book) List(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	sort.Sort(entity.ByYear(books))
+	sort.Sort(entity.SortedBooks(books))
 
 	date := entity.BookTime(time.Now())
 
 	bookList := entity.BookList{Books: books, Date: date}
 
-	res, err := json.Marshal(bookList) 
+	res, err := json.Marshal(bookList)
 
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
