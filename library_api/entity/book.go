@@ -6,9 +6,9 @@ import (
 )
 
 type Book struct {
-	Name   string `json:"name"`
-	Author string `json:"author"`
-	Year   int    `json:"year"`
+	Name   string `csv:"name"`
+	Author string `csv:"author"`
+	Year   int    `csv:"year"`
 }
 
 type BookRequestAndResponse struct {

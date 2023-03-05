@@ -10,7 +10,7 @@ import (
 )
 
 func Route() {
-	b := controller.Book{Book_repository: repository.NewBookRepository()}
+	b := controller.Book{Book_repository: repository.NewCsvRepository()}
 	rtr := mux.NewRouter()
 	rtr.HandleFunc("/create_book", b.CreateBook).Methods(http.MethodPost)
 	rtr.HandleFunc("/books", b.List).Methods(http.MethodGet)
