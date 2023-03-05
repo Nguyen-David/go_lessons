@@ -11,6 +11,7 @@ type Config struct {
 	ListeningURL string `json:ListeningURL`
 	TimeFormat string `json:TimeFormat`
 	Port string `json:Port`
+	RepoFilePath string `json:RepoFilePath`
 }
 
 func NewJsonConfig(configFilePath string) (Config, error){

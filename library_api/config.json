@@ -1,5 +1,6 @@
 {
     "ListeningURL": "/",
     "TimeFormat": "02.01.2006",
-    "Port": ":8082"
+    "Port": ":8082",
+    "RepoFilePath": "./storage/books.csv"
 }
