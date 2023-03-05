@@ -11,18 +11,22 @@ type Book struct {
 	Year   int    `json:"year"`
 }
 
-
 type BookRequestAndResponse struct {
 	Name   string `json:"name"`
 	Author string `json:"author"`
 	Year   string `json:"year"`
 }
 
-type ByYear []Book
+type BookList struct {
+	Books []Book `json:"books"`
+	Date BookTime `json:"date"`
+}
 
-func (a ByYear) Len() int           { return len(a) }
-func (a ByYear) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
-func (a ByYear) Less(i, j int) bool { return a[i].Year < a[j].Year }
+type SortedBooks []Book
+
+func (a SortedBooks) Len() int           { return len(a) }
+func (a SortedBooks) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
+func (a SortedBooks) Less(i, j int) bool { return a[i].Year < a[j].Year }
 
 func (b *Book) MarshalJSON() ([]byte, error) {
 	return json.Marshal(&BookRequestAndResponse{
@@ -43,6 +47,7 @@ func (b *Book) UnmarshalJSON(data []byte) error {
 	b.Name = book.Name
 	b.Author = book.Author
 	b.Year, err = strconv.Atoi(book.Year)
+
 
 	return err
 }

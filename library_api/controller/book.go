@@ -6,26 +6,46 @@ import (
 	"io/ioutil"
 	"library_api/entity"
 	"library_api/repository"
+	"log"
 	"net/http"
 	"sort"
-	"log"
+	"time"
 )
 
 type Book struct {
 	Book_repository repository.BookRepository
 }
 
-func (b *Book) CreateBooks(w http.ResponseWriter, r *http.Request) {
+func (b *Book) CreateBook(w http.ResponseWriter, r *http.Request) {
 	book := entity.Book{}
 
 	body, err := ioutil.ReadAll(r.Body)
-	json.Unmarshal(body, &book)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		log.Println(err)
+		return
+	}
+
+	err = json.Unmarshal(body, &book)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		log.Println(err)
+		return
+	}
 
 	_, err = b.Book_repository.Create(book)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		log.Println(err)
-		return 
+		return
+	}
+
+	bl := entity.BookList{}
+	err = json.Unmarshal(body, &bl)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		log.Println(err)
+		return
 	}
 
 	fmt.Println("Successfully Create books")
@@ -41,9 +61,14 @@ func (b *Book) List(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	sort.Sort(entity.ByYear(books))
+	sort.Sort(entity.SortedBooks(books))
 
-	res, err := json.Marshal(books) 
+	date := entity.BookTime(time.Now())
+
+	bookList := entity.BookList{Books: books, Date: date}
+
+	res, err := json.Marshal(bookList)
+
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		log.Println(err)
