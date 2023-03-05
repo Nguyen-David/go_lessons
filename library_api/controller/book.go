@@ -13,7 +13,7 @@ import (
 )
 
 type Book struct {
-	Book_repository repository.BookRepository
+	Book_repository repository.Repository
 }
 
 func (b *Book) CreateBook(w http.ResponseWriter, r *http.Request) {
