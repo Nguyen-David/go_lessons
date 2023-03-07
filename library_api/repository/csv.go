@@ -13,7 +13,7 @@ type csvRepository struct {
 	books []entity.Book
 }
 
-func NewCsvRepository() Repository {
+func NewCsvRepository() BookRepository {
 	return &csvRepository{}
 }
 
