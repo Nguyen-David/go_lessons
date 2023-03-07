@@ -4,7 +4,7 @@ import (
 	"library_api/entity"
 )
 
-type Repository interface {
+type BookRepository interface {
 	Create(book entity.Book) (int, error)
 	List() ([]entity.Book, error)
 }
@@ -13,7 +13,7 @@ type bookRepository struct {
 	books []entity.Book
 }
 
-func NewBookRepository() Repository {
+func NewBookRepository() BookRepository {
 	return &bookRepository{books: []entity.Book{
 		{"Rage", "Stephen King", 1977},
 		{"Philosopher's Stone", "J. K. Rowling", 1997},
