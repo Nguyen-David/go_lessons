@@ -1,7 +1,6 @@
 package repository
 
 import (
-	"library_api/config"
 	"library_api/entity"
 	"log"
 	"os"
@@ -10,43 +9,45 @@ import (
 )
 
 type csvRepository struct {
-	books []entity.Book
+	fileConnection *os.File
 }
 
-func NewCsvRepository() BookRepository {
-	return &csvRepository{}
+func NewCsvRepository(fileConnection *os.File) BookRepository {
+	return &csvRepository{fileConnection: fileConnection}
 }
 
 func (r *csvRepository) Create(book entity.Book) (int, error) {
-	r.books = append(r.books, book)
-
-	booksFile, err := os.OpenFile(config.ConfigGlobal.RepoFilePath, os.O_RDWR|os.O_CREATE, os.ModePerm)
-	if err != nil {
+	books, err := r.List()
+	if err != nil { // Load clients from file
 		log.Println(err)
-		return 0 ,err
-	}
-	defer booksFile.Close()
-
-	if err := gocsv.MarshalFile(r.books, booksFile); err != nil { // Load clients from file
-		log.Println(err)
-		return 0 ,err
+		return 0, err
 	}
 
-	return len(r.books), nil
+	if _, err := r.fileConnection.Seek(0, 0); err != nil {
+		return 0, err
+	}
+
+	books = append(books, book)
+
+	if err := gocsv.MarshalFile(books, r.fileConnection); err != nil { // Load clients from file
+		log.Println(err)
+		return 0, err
+	}
+
+	return len(books), nil
 }
 
 func (r *csvRepository) List() ([]entity.Book, error) {
-	booksFile, err := os.OpenFile(config.ConfigGlobal.RepoFilePath, os.O_RDWR|os.O_CREATE, os.ModePerm)
-	if err != nil {
-		log.Println(err)
-		return r.books, err
-	}
-	defer booksFile.Close()
-
-	if err := gocsv.UnmarshalFile(booksFile, &r.books); err != nil { // Load clients from file
-		log.Println(err)
-		return r.books, err
+	if _, err := r.fileConnection.Seek(0, 0); err != nil {
+		return nil, err
 	}
 
-	return r.books, nil
+	var books []entity.Book
+	println(r.fileConnection)
+	if err := gocsv.UnmarshalFile(r.fileConnection, &books); err != nil { // Load clients from file
+		log.Println(err)
+		return nil, err
+	}
+
+	return books, nil
 }
