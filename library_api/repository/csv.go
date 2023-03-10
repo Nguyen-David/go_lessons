@@ -43,7 +43,6 @@ func (r *csvRepository) List() ([]entity.Book, error) {
 	}
 
 	var books []entity.Book
-	println(r.fileConnection)
 	if err := gocsv.UnmarshalFile(r.fileConnection, &books); err != nil { // Load clients from file
 		log.Println(err)
 		return nil, err
