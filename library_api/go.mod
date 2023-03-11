@@ -4,6 +4,7 @@ go 1.20
 
 require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
+	github.com/gocarina/gocsv v0.0.0-20230226133904-70c27cb2918a // indirect
 	github.com/golang/mock v1.6.0 // indirect
 	github.com/gorilla/mux v1.8.0 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
