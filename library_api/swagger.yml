@@ -1,0 +1,70 @@
+openapi: 3.0.0
+servers:
+  # Added by API Auto Mocking Plugin
+  - description: SwaggerHub API 
+    url: http://localhost:8082
+info:
+  version: "1.0.0"
+  title: library-api
+  description: The API for the Library API
+paths:
+  /books:
+    get:
+      tags:
+        - book
+      description: list of books
+      responses:
+        '200':
+          description: All books
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                      description: name of Book
+                    author:
+                      type: string
+                      description: author of Book
+                    year:
+                      type: integer
+                      description: year of book published
+        '400':
+          description: list of book is empty
+  /create_book:
+    post:
+      tags:
+        - book
+      description: create one book
+      requestBody:
+        description: New book data
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: name of Book
+                author:
+                  type: string
+                  description: author of Book
+                year:
+                  type: integer
+                  description: year of book published
+      
+      responses:
+        '201':
+          description: created book
+          content:
+            application/json:
+              schema:
+                type: string
+                example: 'Successfully Create book'
+                  
+        '400':
+          description: Bad request for create book
