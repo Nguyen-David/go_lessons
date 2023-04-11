@@ -15,19 +15,18 @@ import (
 	"time"
 )
 
-func producer(stream mockstream.Stream, tweetChan chan *mockstream.Tweet, doneChan chan bool) {
+func producer(stream mockstream.Stream, tweetChan chan *mockstream.Tweet) {
 	defer close(tweetChan)
 	for {
 		tweet, err := stream.Next()
 		if err == mockstream.ErrEOF {
-			doneChan <- true
 			return
 		}
 		tweetChan <- tweet
 	}
 }
 
-func consumer(tweetChan chan *mockstream.Tweet, doneChan chan bool) {
+func consumer(tweetChan chan *mockstream.Tweet) {
 	for {
 		select {
 		case tweet, ok := <-tweetChan:
@@ -40,8 +39,6 @@ func consumer(tweetChan chan *mockstream.Tweet, doneChan chan bool) {
 			} else {
 				return
 			}
-		case <-doneChan:
-			return
 		}
 	}
 }
@@ -52,13 +49,12 @@ func main() {
 
 	// Channels
 	tweetChan := make(chan *mockstream.Tweet)
-	doneChan := make(chan bool)
 
 	// Producer
-	go producer(stream, tweetChan, doneChan)
+	go producer(stream, tweetChan)
 
 	// Consumer
-	consumer(tweetChan, doneChan)
+	consumer(tweetChan)
 
 	fmt.Printf("Process took %s\n", time.Since(start))
 }
