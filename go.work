@@ -1,3 +1,3 @@
 go 1.20
 
-use ./library_api/
+use ./go-concurrency-exercises/
