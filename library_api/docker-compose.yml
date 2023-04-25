@@ -1,5 +1,8 @@
 version: "3.8"
 
+volumes:
+  library-api-volume:
+
 networks:
   app:
     driver: bridge
@@ -15,6 +18,9 @@ services:
       POSTGRES_PASSWORD: mypassword
       POSTGRES_DB: mydatabase
     command: [ "postgres", "-c", "log_statement=all" ] # log all queries into the container log file
+    volumes:
+      - library-api-volume:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql:ro
     networks:
       - app
   app:
