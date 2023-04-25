@@ -8,15 +8,16 @@ RUN go mod download
 
 COPY . ./
 
-RUN go build -o main .
+RUN go build -o /library_api/ ./main.go
 
 EXPOSE 8000
 
 FROM alpine:latest
 
-WORKDIR /root/
+WORKDIR /library_api
 
 RUN apk --no-cache add ca-certificates
-COPY --from=0 /library_api ./
+RUN apk add libc6-compat
+COPY --from=build /library_api /library_api
 
 CMD ["./main"]
